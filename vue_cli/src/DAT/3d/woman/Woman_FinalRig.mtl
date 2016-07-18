@@ -1,0 +1,12 @@
+# Blender MTL File: 'Woman_FinalRig.blend'
+# Material Count: 1
+
+newmtl Main_Material
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd All_Baked_V3.0.tga
