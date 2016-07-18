@@ -75,7 +75,7 @@
 
 
       <!-- model -->
-      <a-entity v-if="logo_done" >
+      <a-entity v-if="logo_done&&frame_reload" >
         
        <!--  <a-entity id="model" position="0 0 -2">
           <a-animation attribute="position" from="0 -10 -2" to="0 0 -2" dur="2000"
@@ -100,52 +100,53 @@
                        dur="1000"></a-animation>
         </a-curvedimage> -->
 
-        <a-image id="country" position="1 15 -2" :src="user_data[0].country" width="12" height="4" scale="0.2 0.2 0.2">
+        <!-- country -->
+        <a-image id="country" position="1 15 -2" :src="user_data[now_page].country" width="9" height="3" scale="0.2 0.2 0.2">
           <a-animation attribute="position" easing="ease-bounce" from="1 15 -2" to="1 0.5 -2" begin="1000"
                        dur="2000"></a-animation>
         </a-image>
 
-
-        <a-box id="main_center" color="#101010" height="0.1" width="3" depth="3">
-          <a-animation attribute="rotation" from="-270 0 0" to="-90 0 0" dur="750" begin="1000"
+        <!-- main frame -->
+        <a-box id="main_right" color="#101010" height="0.1" width="3" depth="3">
+          <a-animation attribute="rotation" from="-270 -30 0" to="-90 -30 0" dur="750" begin="1000"
                        fill="both"></a-animation>
           <a-animation attribute="position" from="8 0 -9" to="8 3.5 -9" dur="750" begin="1000"
                        fill="both"></a-animation>
-          <a-image :src="user_data[0].main_photo" width="3" height="3" rotation="90 0 0" position="0 -.1 0"></a-image>
+          <a-image :src="user_data[now_right].main_photo" width="3" height="3" rotation="90 0 0" position="0 -.1 0"></a-image>
+        </a-box>
+
+        <a-box id="main_center" color="#101010" height="0.1" width="6" depth="6">
+          <a-animation attribute="rotation" from="-270 0 0" to="-90 0 0" dur="750" begin="1000"
+                       fill="both"></a-animation>
+          <a-animation attribute="position" from="0 0 -9" to="0 4 -9" dur="750" begin="1000"
+                       fill="both"></a-animation>
+          <a-image :src="user_data[now_page].main_photo" width="6" height="6" rotation="90 0 0" position="0 -.1 0"></a-image>
         </a-box>
 
         <a-box id="main_left" color="#101010" height="0.1" width="3" depth="3">
-          <a-animation attribute="rotation" from="-270 0 0" to="-90 0 0" dur="750" begin="1000"
+          <a-animation attribute="rotation" from="-270 30 0" to="-90 30 0" dur="750" begin="1000"
                        fill="both"></a-animation>
-          <a-animation attribute="position" from="0 0 -9" to="0 3.5 -9" dur="750" begin="1000"
+          <a-animation attribute="position" from="-8 0 -9" to="-8 5.5 -9" dur="750" begin="1000"
                        fill="both"></a-animation>
-          <a-image :src="user_data[1].main_photo" width="3" height="3" rotation="90 0 0" position="0 -.1 0"></a-image>
+          <a-image :src="user_data[now_left].main_photo" width="3" height="3" rotation="90 0 0" position="0 -.1 0"></a-image>
         </a-box>
 
-        <a-box id="main_right" color="#101010" height="0.1" width="3" depth="3">
-          <a-animation attribute="rotation" from="-270 0 0" to="-90 0 0" dur="750" begin="1000"
-                       fill="both"></a-animation>
-          <a-animation attribute="position" from="-8 0 -9" to="-8 3.5 -9" dur="750" begin="1000"
-                       fill="both"></a-animation>
-          <a-image :src="user_data[2].main_photo" width="3" height="3" rotation="90 0 0" position="0 -.1 0"></a-image>
-        </a-box>
-
-        <a-curvedimage id="stereoscopic-fall-collection-text" :src="user_data[0].age" radius="5.7"
+        <a-curvedimage id="stereoscopic-fall-collection-text" :src="user_data[now_page].age" radius="5.7"
                        theta-length="20" height=".8" position="0 0.9 0" scale=".4 .4 .4">
           <a-animation attribute="rotation" from="0 170 0" to="0 200 0" begin="750"
                        dur="1000"></a-animation>
         </a-curvedimage>
 
         <!-- extain -->
-        <a-curvedimage id="extain1" :src="user_data[0].extain_photo[0]" radius="7" theta-length="20" height="2"
+        <a-curvedimage id="extain1" :src="user_data[now_page].extain_photo[0]" radius="9" theta-length="15" height="2"
                        position="0 0.5 0" scale=".4 .4 .4">
           <a-animation attribute="rotation" from="0 200 0" to="0 100 0" begin="750"
                        dur="1000"></a-animation>
         </a-curvedimage>
 
-        <a-curvedimage id="extain2" :src="user_data[0].extain_photo[1]" radius="7" theta-length="20" height="2"
+        <a-curvedimage id="extain2" :src="user_data[now_page].extain_photo[1]" radius="9" theta-length="15" height="2"
                        position="0 0.5 0" scale=".4 .4 .4">
-          <a-animation attribute="rotation" from="0 160 0" to="0 75 0" begin="750"
+          <a-animation attribute="rotation" from="0 160 0" to="0 80 0" begin="750"
                        dur="1000"></a-animation>
         </a-curvedimage>
         <!--  -->
@@ -186,8 +187,9 @@ export default {
   data () {
     return {
       logo_done: true,
+      frame_reload: true,
 
-      now_page: 2,
+      now_page: 1,
 
       change_img: '#mozvr',
 
@@ -216,7 +218,7 @@ export default {
         },
         {
           user_name: 'Jing',
-          main_photo: './src/DAT/images/data/',
+          main_photo: './src/DAT/images/data/man02-1.png',
           main_gray: './src/DAT/images/data/man02-grey.png',
           age: './src/DAT/images/data/man02-age.png',
           extain_photo: ['./src/DAT/images/data/','./src/DAT/images/data/'],
@@ -225,7 +227,7 @@ export default {
         },
         {
           user_name: 'Frank',
-          main_photo: './src/DAT/images/data/',
+          main_photo: './src/DAT/images/data/man03-1.png',
           main_gray: './src/DAT/images/data/man03-grey.png',
           country: './src/DAT/images/data/man03-country.png',
           extain_photo: ['./src/DAT/images/data/','./src/DAT/images/data/'],
@@ -250,18 +252,32 @@ export default {
       }
     },
     user_name_vert: function() {
-      return 'text: ' + this.user_data[0].user_name;
+      return 'text: ' + this.user_data[this.now_page].user_name;
+    },
+    now_left: function() {
+      return this.now_page-1<0 ? 2 : this.now_page-1;
+    },
+    now_right: function() {
+      return this.now_page+1>2 ? 0 : this.now_page+1;
     }
   },
   methods: {
     prevSelect(){
       if(this.now_page!=0){
+        this.frame_reload = false;
         this.now_page=this.now_page-1;
+        setTimeout(()=>{
+          this.frame_reload = true;
+        },500)
       }
     },
     nextSelect(){
-      if(this.now_page!=4){
+      if(this.now_page!=2){
+        this.frame_reload = false;
         this.now_page=this.now_page+1;
+        setTimeout(()=>{
+          this.frame_reload = true;
+        },500)
       }
     },
   },
