@@ -12,8 +12,11 @@
     "aframe-draw-component": "^1.4.0",
     "aframe-text-component": "^0.3.0",
     "aframe-textwrap-component": "^1.0.1",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-polyfill": "^6.9.1",
     "babel-runtime": "^6.0.0",
     "gsap": "^1.18.5",
+    "theaterjs": "^3.0.0",
     "vue": "^1.0.0"
   },
   "devDependencies": {

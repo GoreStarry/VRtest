@@ -11,7 +11,7 @@
     </asset>
     <library_images>
         <image id="ID3">
-            <init_from>man-color2.jpg</init_from>
+            <init_from>man-color3s.jpg</init_from>
         </image>
     </library_images>
     <library_effects>

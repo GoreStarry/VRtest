@@ -4,7 +4,7 @@ module.exports.component = {
 			default: 150
 		},
 		height: {
-			default: 100
+			default: 30
 		},
 		background: {
 			default: "green"
@@ -29,7 +29,7 @@ module.exports.component = {
 		canvas.width = w;
 		canvas.height = h;
 		canvas.text = text;
-		canvas.style = "display: none";
+		// canvas.style = "display: none"; //make safari err for ?
 		_.canvas = canvas;
 		_.ctx = canvas.getContext("2d");
 
@@ -51,11 +51,11 @@ module.exports.component = {
 	render: function() {
 		// if(this.registers.length > 0) { //backwards compatibility
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.ctx.fillStyle = 'black';
+			this.ctx.fillStyle = '#ECECEC';
 			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-			this.ctx.fillStyle = 'white';
+			this.ctx.fillStyle = 'black';
 			this.ctx.font = 'italic 30px Calibri';
-			this.ctx.fillText(this.canvas.text, 0, 80);
+			this.ctx.fillText(this.canvas.text, 0, 220);
 			this.registers.forEach(function(item) {
 				item();
 			});
