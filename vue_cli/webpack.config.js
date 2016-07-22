@@ -3,7 +3,7 @@ var webpack = require('webpack')
 
 module.exports = {
   entry: {
-    // proto: './src/main.js',
+    proto: './src/main.js',
     DAT: './src/DAT.js', //day_after_tomorrow 
   },
   output: {

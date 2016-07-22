@@ -13,10 +13,19 @@
             </a-mixin>
         </a-assets>
 
-        <a-entity id="camera" camera look-controls wasd-controls position="0 2 4">
+        <a-entity id="camera" camera look-controls wasd-controls position="0 2 8">
             <a-entity position="0 0 -5" geometry="primitive: ring; radiusOuter: 0.06;
                               radiusInner: 0.05;" material="color: red; shader: flat" cursor="maxDistance: 100"></a-entity>
         </a-entity>
+
+
+        <a-entity v-for="(index,player) in players"  look-at=".ans" position="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}">
+          <a-torus color="#5d472a" position="0 0 0" segments-radial="50" segments-tubular="200" radius="2"
+            radius-tubular="0.1"></a-torus>
+          <a-ring radius-inner="0.0001" radius-outer="2" :src="player.mugshot"></a-ring>
+          <a-animation attribute="position" begin="{{$index * 200}}" from="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}" to="{{15*Math.cos(Math.PI/4 * $index)}} 1.3 {{15*Math.sin(Math.PI/4 * $index)}}" dur="700" easing="linear" repeat="indefinite" direction="alternate"></a-animation>
+        </a-entity>
+          
         
       <!--   <a-image id="star" :height="star.height" :width="star.width" src="./src/images/star.png" position="0 6 -10" >
         </a-image> -->
@@ -24,7 +33,7 @@
         <!-- <a-entity  position="0 1 0" geometry="primitive: plane;" material="color:red"  ></a-entity> -->
 
         <a-plane id="typing_text"  rotation="30 0 0" :draw="pure_typing" 
-         :height="question.height" :width="question.width" position="0 7 -5"></a-plane>
+         :height="question.height" :width="question.width" position="0 7 -1"></a-plane>
 
         <!-- <a-plane id="typing_text" textwrap="textAlign: center; x: 128; y: 128; text: Hello world!" height="3" width="6" position="0 3 -10" color="green"></a-plane> -->
 
@@ -43,17 +52,17 @@
             ></a-animation>
         </a-entity> -->
 
-        <a-entity class="ans" position="-2 3 -3">
+        <a-entity class="ans" position="-2 3 0">
             <a-entity position="-0.7 0 0" text="text: YES!" material="color: green"></a-entity>
             <a-animation mixin="ans_ani"></a-animation>
         </a-entity>
 
-        <a-entity position="2 3 -3" class="ans">
+        <a-entity position="2 3 0" class="ans">
             <a-entity position="-0.5 0 0" text="text: NO!" material="color: red"></a-entity>
             <a-animation mixin="ans_ani"></a-animation>
         </a-entity>
 
-        <a-sky src="./src/images/louvre.jpg" rotation="0 -99.5 0"></a-sky>
+        <a-sky src="./src/images/louvreA.jpg" rotation="0 -99.5 0"></a-sky>
     </a-scene>
 </template>
 
@@ -61,6 +70,32 @@
 export default {
   data () {
     return {
+      players: [{
+        name: 'mike',
+        mugshot: './src/QA/images/fake/c2feae864092f4a.png',
+      },{
+        name: 'July', 
+        mugshot: './src/QA/images/fake/b350de07f4366bd.jpeg',
+      },{
+        name: 'July', 
+        mugshot: './src/QA/images/fake/c2feae864092f4a.png',
+      },{
+        name: 'July', 
+        mugshot: './src/QA/images/fake/ae96ec867ec3739.jpeg',
+      },{
+        name: 'July', 
+        mugshot: './src/QA/images/fake/b350de07f4366bd.jpeg',
+      },{
+        name: 'July', 
+        mugshot: './src/QA/images/fake/c2feae864092f4a.png',
+      },{
+        name: 'July', 
+        mugshot: './src/QA/images/fake/b350de07f4366bd.jpeg',
+      },{
+        name: 'July', 
+        mugshot: './src/QA/images/fake/2187e5cde168cb6.jpeg',
+      }],
+
       star: {
         width: 0,
         height: 0,
@@ -84,6 +119,11 @@ export default {
     }
   },
   computed:{
+    circle_position: function(index) {
+      // angle = Math.cos(Math.PI/3)
+      // const x = 3*;
+      // return `${30*} 0 ${}`;
+    },
     pure_typing: function(){
       return {
         text: this.typing_text.text,
