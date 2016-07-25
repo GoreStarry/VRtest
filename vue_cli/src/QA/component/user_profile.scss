@@ -1,0 +1,103 @@
+.box__prfile {
+    box-sizing: border-box;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    padding: 0 0 30vw 0;
+//    pointer-events: none;
+
+    .img__mugshot {
+        height: 100%;
+        border-radius: 20px;
+    }
+    .mugshot__info_block {
+        height: 25vh;
+        width: 70vw;
+        border-top-right-radius: 2rem;
+        border-bottom-right-radius: 2rem;
+        text-align: right;
+        padding: 1rem 5vw 1rem 0;
+    }
+    .name_age__info_block {
+        margin-top: 5vh;
+        width: 56vw;
+        span {
+            width: 12vw;
+        }
+    }
+    .location__info_block {
+        margin-top: 2vh;
+        width: 60vw;
+        span {
+            width: 20vw;
+        }
+    }
+    .intro__info_block{
+        margin-top: 2vh;
+        width: 70vw;
+        span {
+            text-align: left;
+            width: 40vw;
+        }
+    }
+}
+
+.btn__say_hi{
+    cursor: pointer;
+    position: fixed;
+    bottom: 15vw;
+    left: 20vw;
+    background-color: burlywood;
+    text-align: center;
+    border-radius: 50%;
+    width: 20vw;
+    height: 20vw;
+    line-height: 20vw;
+}
+
+.btn__close_profile{
+    cursor: pointer;
+    position: fixed;
+    bottom: 15vw;
+    right: 20vw;
+    background-color: red;
+    text-align: center;
+    border-radius: 50%;
+    width: 20vw;
+    height: 20vw;
+    line-height: 20vw;
+}
+
+.box__info_block {
+    position: relative;
+    display: inline-block;
+    background-color: rgba(255, 255, 255, 0.5);
+    //    box-sizing: border-box;
+    span {
+        display: inline-block;
+        text-align: center;
+    }
+    &:after {
+        display: block;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(-19deg, rgba(43, 40, 50, 0.8) 0%, rgba(43, 40, 50, 0.4) 46%, rgba(0, 0, 0, 0.05) 50%);
+        -webkit-filter: blur(70px);
+        filter: blur(70px);
+    }
+    &.left {
+        transform: translateX(-100%);
+        text-align: right;
+        padding: 1rem 5rem 1rem 0;
+    }
+    &.right {
+        transform: translateX(100%);
+        align-self: flex-end;
+        padding: 1rem 0 1rem 5rem;
+    }
+}

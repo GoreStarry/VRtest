@@ -2,11 +2,16 @@
   <!-- <div id="app">
     <h1>{{ msg }}</h1>
   </div> -->
+  
+  <div :class="['btn__confirm',{'btn__confirm--act': select_target}]" @click="confirmClick">Confirm</div>
 
-    <div>
-      {{typing_text.text}}
-    </div>
-   <a-scene>
+  <user-profile 
+    :players-data="players"
+    :now-index="profile_index"
+    :profile-close="profileClose" 
+    :profile-switch="profile_switch"></user-profile>
+    
+  <a-scene>  
         <a-assets>
             <a-mixin id="ans_ani" attribute="rotation" from="0 0 0"
             begin="hover" to="0 360 0" dur="2500" fill="forwards" direction="alternate" repeat="1">
@@ -19,7 +24,13 @@
         </a-entity>
 
 
-        <a-entity v-for="(index,player) in players"  look-at=".ans" position="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}">
+        <a-entity class="players"
+          @mouseenter="playerMouseenter($index)"
+          @mouseleave="playerMouseout()"
+          v-for="(index,player) in players" 
+          track-by="$index"
+          look-at=".ans"
+          position="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}">
           <a-torus color="#5d472a" position="0 0 0" segments-radial="50" segments-tubular="200" radius="2"
             radius-tubular="0.1"></a-torus>
           <a-ring radius-inner="0.0001" radius-outer="2" :src="player.mugshot"></a-ring>
@@ -67,39 +78,65 @@
 </template>
 
 <script>
+import UserProfile from './component/user_profile.vue';
+require('gsap/src/minified/TweenMax.min.js');
+
+
 export default {
+  components: {
+    'user-profile': UserProfile,
+  },
   data () {
     return {
       players: [{
         name: 'mike',
         mugshot: './src/QA/images/fake/c2feae864092f4a.png',
+        age: '25',
+        lacation: '北京',
+        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
       },{
         name: 'July', 
         mugshot: './src/QA/images/fake/b350de07f4366bd.jpeg',
+        age: '25',
+        lacation: '北京',
+        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
       },{
         name: 'July', 
         mugshot: './src/QA/images/fake/c2feae864092f4a.png',
+        age: '25',
+        lacation: '北京',
+        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
       },{
         name: 'July', 
         mugshot: './src/QA/images/fake/ae96ec867ec3739.jpeg',
+        age: '25',
+        lacation: '北京',
+        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
       },{
         name: 'July', 
         mugshot: './src/QA/images/fake/b350de07f4366bd.jpeg',
+        age: '25',
+        lacation: '北京',
+        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
       },{
         name: 'July', 
         mugshot: './src/QA/images/fake/c2feae864092f4a.png',
+        age: '25',
+        lacation: '北京',
+        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
       },{
         name: 'July', 
         mugshot: './src/QA/images/fake/b350de07f4366bd.jpeg',
+        age: '25',
+        lacation: '北京',
+        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
       },{
         name: 'July', 
         mugshot: './src/QA/images/fake/2187e5cde168cb6.jpeg',
+        age: '25',
+        lacation: '北京',
+        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
       }],
-
-      star: {
-        width: 0,
-        height: 0,
-      },
 
       typing_text: {
         text: '123',
@@ -110,12 +147,16 @@ export default {
         height: 0,
       },
 
-
-      // note: changing this line won't causes changes
-      // with hot-reload because the reloaded component
-      // preserves its current state and we are modifying
-      // its initial state.
-      msg: 'Hello Vue23222!'
+      select_active: false,
+      
+      /*
+        player,
+        option,
+       */
+      select_target: false,
+      
+      profile_switch: false,
+      profile_index: 0,
     }
   },
   computed:{
@@ -131,6 +172,56 @@ export default {
         height: 256,
       }
     }
+  },
+  methods: {
+    confirmClick (){
+      switch(this.select_target){
+
+        case 'player':
+          if(!this.profile_switch){
+            this.profile_switch = true;
+const info_block = document.querySelectorAll('.box__info_block');
+            
+            var profile_tl = new TimelineMax();
+            profile_tl.staggerTo(info_block, 0.3,{
+              cycle:{
+                x: ['0%','0%']
+              },
+              autoAlpha: 1,
+              ease: Power1.easeOut
+            },0.1);
+          }else{
+            this.profile_switch = true;
+          }
+
+        default:
+          return false;
+      }
+    },
+    playerMouseenter(index){
+      console.log(index);
+      this.select_target = 'player';
+      this.profile_index = index;
+    },
+    playerMouseout(){
+      console.log('out')
+      this.select_target = false;
+    },
+    profileClose(){
+      var profile_tl = new TimelineMax({onComplete: ()=>{
+        this.profile_switch = false;
+      }});
+      
+      const info_block = document.querySelectorAll('.box__info_block');
+
+      profile_tl.staggerTo(info_block, 0.3,{
+        cycle:{
+          x: ['-100%','100%']
+        },
+        autoAlpha: 0,
+        ease: Power1.easeOut
+      },0.1);
+    },
   },
   ready () {
     var theater = theaterJS()
@@ -171,8 +262,6 @@ export default {
 }
 </script>
 
-<style>
-body {
-  font-family: Helvetica, sans-serif;
-}
+<style lang="sass">
+  @import './App.scss';
 </style>
