@@ -1,7 +1,4 @@
 <template>
-  <!-- <div id="app">
-    <h1>{{ msg }}</h1>
-  </div> -->
   
   <div :class="['btn__confirm',{'btn__confirm--act': select_target}]" @click="confirmClick">Confirm</div>
 
@@ -26,7 +23,7 @@
 
         <a-entity class="players"
           @mouseenter="playerMouseenter($index)"
-          @mouseleave="playerMouseout()"
+          @mouseleave="targetMouseleave()"
           v-for="(index,player) in players" 
           track-by="$index"
           look-at=".ans"
@@ -63,12 +60,22 @@
             ></a-animation>
         </a-entity> -->
 
-        <a-entity class="ans" position="-2 3 0">
+        <a-entity
+            class="ans"
+            @mouseenter="ansMouseEnter(0)"
+            @mouseleave="targetMouseleave()"
+            position="-2 3 0">
             <a-entity position="-0.7 0 0" text="text: YES!" material="color: green"></a-entity>
+            <a-plane opacity="0" height="0.8" width="1.2"></a-plane>
             <a-animation mixin="ans_ani"></a-animation>
         </a-entity>
 
-        <a-entity position="2 3 0" class="ans">
+        <a-entity
+            class="ans"
+            @mouseenter="ansMouseEnter(1)"
+            @mouseleave="targetMouseleave()"
+            position="2 3 0" >
+            <a-plane opacity="0" height="0.8" width="1.2"></a-plane>
             <a-entity position="-0.5 0 0" text="text: NO!" material="color: red"></a-entity>
             <a-animation mixin="ans_ani"></a-animation>
         </a-entity>
@@ -81,6 +88,21 @@
 import UserProfile from './component/user_profile.vue';
 require('gsap/src/minified/TweenMax.min.js');
 
+import {question} from './QA_data/best_part.js';
+import {players} from './QA_data/players.js';
+
+
+var theater = theaterJS({
+  "minSpeed": {
+    "erase": 80,
+    "type": 80,
+  },
+
+  "maxSpeed": {
+    "erase": 350,
+    "type": 350
+  }
+});
 
 export default {
   components: {
@@ -88,59 +110,16 @@ export default {
   },
   data () {
     return {
-      players: [{
-        name: 'mike',
-        mugshot: './src/QA/images/fake/c2feae864092f4a.png',
-        age: '25',
-        lacation: '北京',
-        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
-      },{
-        name: 'July', 
-        mugshot: './src/QA/images/fake/b350de07f4366bd.jpeg',
-        age: '25',
-        lacation: '北京',
-        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
-      },{
-        name: 'July', 
-        mugshot: './src/QA/images/fake/c2feae864092f4a.png',
-        age: '25',
-        lacation: '北京',
-        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
-      },{
-        name: 'July', 
-        mugshot: './src/QA/images/fake/ae96ec867ec3739.jpeg',
-        age: '25',
-        lacation: '北京',
-        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
-      },{
-        name: 'July', 
-        mugshot: './src/QA/images/fake/b350de07f4366bd.jpeg',
-        age: '25',
-        lacation: '北京',
-        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
-      },{
-        name: 'July', 
-        mugshot: './src/QA/images/fake/c2feae864092f4a.png',
-        age: '25',
-        lacation: '北京',
-        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
-      },{
-        name: 'July', 
-        mugshot: './src/QA/images/fake/b350de07f4366bd.jpeg',
-        age: '25',
-        lacation: '北京',
-        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
-      },{
-        name: 'July', 
-        mugshot: './src/QA/images/fake/2187e5cde168cb6.jpeg',
-        age: '25',
-        lacation: '北京',
-        about_me: '咳唔……大家好，我叫July，我是來自地球的XXXX，今年XXX歲，職業是護花使者，請大家多多指教！',
-      }],
+      players: players, 
 
       typing_text: {
-        text: '123',
+        text: '1f4',
       },
+      
+      /*QA data*/
+      data_question: question,
+      now_ans_select: false,
+      now_ques_step: 1,
 
       question: {
         width: 0,
@@ -151,12 +130,20 @@ export default {
       
       /*
         player,
-        option,
+        answer,
        */
       select_target: false,
       
       profile_switch: false,
       profile_index: 0,
+
+      /*profile animation*/
+      profile_aniBlock: false,
+      profile_tl: new TimelineLite(),
+      profile_tl_close: new TimelineMax({onComplete: ()=>{
+        this.profile_switch = false;
+      }}),
+
     }
   },
   computed:{
@@ -174,57 +161,65 @@ export default {
     }
   },
   methods: {
+    ansMouseEnter(option){
+      this.select_target = 'answer';
+      this.now_ans_select = option;
+    },
     confirmClick (){
       switch(this.select_target){
 
         case 'player':
           if(!this.profile_switch){
             this.profile_switch = true;
-const info_block = document.querySelectorAll('.box__info_block');
             
-            var profile_tl = new TimelineMax();
-            profile_tl.staggerTo(info_block, 0.3,{
-              cycle:{
-                x: ['0%','0%']
-              },
+            this.profile_tl.staggerTo(this.profile_aniBlock, 0.3,{
+              // cycle:{
+              //   x: ['0%','0%']
+              // },
               autoAlpha: 1,
               ease: Power1.easeOut
             },0.1);
           }else{
             this.profile_switch = true;
           }
+        case 'answer': 
+          // get next question number
+          this.now_ques_step = Object.keys(this.data_question[this.now_ques_step].answers[this.now_ans_select])[0];
+          this.runTheater();
 
         default:
           return false;
       }
+    },
+    runTheater() {
+      console.log(this.data_question[this.now_ques_step].question);
+      theater
+        .addScene(`typing_text: ${this.data_question[this.now_ques_step].question}`, 200)
+        // .addScene(theater.replay)
     },
     playerMouseenter(index){
       console.log(index);
       this.select_target = 'player';
       this.profile_index = index;
     },
-    playerMouseout(){
-      console.log('out')
+    targetMouseleave(){
       this.select_target = false;
     },
     profileClose(){
-      var profile_tl = new TimelineMax({onComplete: ()=>{
-        this.profile_switch = false;
-      }});
       
-      const info_block = document.querySelectorAll('.box__info_block');
-
-      profile_tl.staggerTo(info_block, 0.3,{
-        cycle:{
-          x: ['-100%','100%']
-        },
+      this.profile_tl_close.staggerTo(this.profile_aniBlock, 0.3,{
+        // cycle:{
+        //   x: ['-100%','100%']
+        // },
         autoAlpha: 0,
         ease: Power1.easeOut
       },0.1);
     },
   },
   ready () {
-    var theater = theaterJS()
+    this.profile_aniBlock = document.querySelectorAll('.box__info_block');
+
+    /* Question Animation */
     theater
       .on('type:start, erase:start', function () {
         // add a class to actor's dom element when he starts typing/erasing
@@ -236,25 +231,19 @@ const info_block = document.querySelectorAll('.box__info_block');
         var actor = theater.getCurrentActor()
         actor.$element.classList.remove('is-typing')
       })
-    var that = this;
-    function runTheater() {
-      theater
-        .addActor('typing_text',that.typing_text)
+      
+    theater
+        .addActor('typing_text',this.typing_text)
 
-      theater
-        .addScene('typing_text: 對於愛情，當然是心動不如馬上行動。', 400)
-        .addScene(theater.replay)
-    }
-    
-   
+    var that = this;
 
     setTimeout(opening,2000)
     function opening() {
       TweenMax.to(that.question, 1, {
-        bezier:[{width:0, height:0}, {width:5, height:0}, {width:6, height:3}], 
+        bezier:[{width:0, height:0}, {width:5, height:0}, {width:8, height:1}], 
         ease:Linear.easeNone,
         repeat:0,
-        onComplete: runTheater,
+        onComplete: that.runTheater,
       });
     }
     

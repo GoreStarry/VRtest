@@ -26,8 +26,8 @@ module.exports.component = {
 	createCanvas: function (w, h, text) {
 		var _ = this;
 		var canvas = document.createElement("canvas");
-		canvas.width = w;
-		canvas.height = h;
+		canvas.width = 800;
+		canvas.height = 100;
 		canvas.text = text;
 		// canvas.style = "display: none"; //make safari err for ?
 		_.canvas = canvas;
@@ -51,11 +51,11 @@ module.exports.component = {
 	render: function() {
 		// if(this.registers.length > 0) { //backwards compatibility
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.ctx.fillStyle = '#ECECEC';
-			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 			this.ctx.fillStyle = 'black';
+			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+			this.ctx.fillStyle = 'white';
 			this.ctx.font = 'italic 30px Calibri';
-			this.ctx.fillText(this.canvas.text, 0, 220);
+			this.ctx.fillText(this.canvas.text, 10, 60);
 			this.registers.forEach(function(item) {
 				item();
 			});

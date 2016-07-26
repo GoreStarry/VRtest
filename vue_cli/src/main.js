@@ -4,7 +4,8 @@ import App from './QA/App.vue'
 require('gsap/src/minified/TweenMax.min.js'); 
 var draw = require('./lib/draw/draw.js').component;
 // var textwrap = require("aframe-textwrap-component").component;
-
+require('aframe'); 
+require('aframe-text-component');
 AFRAME.registerComponent("draw", draw);
 // AFRAME.registerComponent("textwrap", textwrap);
 
