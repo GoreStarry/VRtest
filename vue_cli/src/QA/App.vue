@@ -36,8 +36,11 @@
           
       
 
-        <a-plane id="typing_text"  rotation="30 0 0" :draw="pure_typing" 
-         :height="question.height" :width="question.width" position="0 7 -1"></a-plane>
+        <!-- <a-plane id="typing_text"  rotation="30 0 0" :draw="pure_typing" 
+         :height="question.height" :width="question.width" position="0 7 -1"></a-plane> -->
+
+        <!-- <a-plane id="typing_text"  rotation="30 0 0" :draw="pure_typing" 
+         height="4" width="10" position="0 7 -1"></a-plane> -->
 
 
  
@@ -74,6 +77,12 @@
             <a-entity position="-0.5 0 0" text="text: NO!" material="color: red"></a-entity>
             <a-animation mixin="ans_ani"></a-animation>
         </a-entity>
+
+        <a-entity id="plane" geometry="primitive: plane; width: 8; height: 5;" position="0 2 1" draw="background: black;  width: 800; height: 500;" textwrap="textAlign: left; x: 0; y: 0; width: 800; height: 500; text: Hello world!Hello world!Hello world!Hello world!Hello world!Hello world! 中文測試123，中文測試123中文測試123中文測試123中文測試123中文測試123。"></a-entity>
+
+        <!-- <a-plane id="typing_text_wrap" position="0 2 1" draw="background: black" textwrap="textAlign: left; x: 0; y: 0; text: Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!"
+         height="4" width="10" ></a-plane> -->
+
 
         <a-sky src="./src/images/louvreA.jpg" rotation="0 -99.5 0"></a-sky>
     </a-scene>
@@ -235,12 +244,13 @@ export default {
 
     setTimeout(opening,2000)
     function opening() {
-      TweenMax.to(that.question, 1, {
-        bezier:[{width:0, height:0}, {width:5, height:0}, {width:8, height:1}], 
-        ease:Linear.easeNone,
-        repeat:0,
-        onComplete: that.runTheater,
-      });
+      that.runTheater();
+      // TweenMax.to(that.question, 1, {
+      //   bezier:[{width:0, height:0}, {width:5, height:0}, {width:8, height:1}], 
+      //   ease:Linear.easeNone,
+      //   repeat:0,
+      //   onComplete: that.runTheater,
+      // });
     }
     
   }

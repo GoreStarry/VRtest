@@ -20,14 +20,16 @@ module.exports.component = {
 	},
 
 	update: function (oldData) {
+		console.log(this.data.width)
+		console.log(this.data.height)
 		this.createCanvas(this.data.width, this.data.height, this.data.text);
 	},
 
 	createCanvas: function (w, h, text) {
 		var _ = this;
 		var canvas = document.createElement("canvas");
-		canvas.width = 800;
-		canvas.height = 100;
+		canvas.width = w;
+		canvas.height = h;
 		canvas.text = text;
 		// canvas.style = "display: none"; //make safari err for ?
 		_.canvas = canvas;
@@ -49,18 +51,19 @@ module.exports.component = {
 	},
 
 	render: function() {
-		// if(this.registers.length > 0) { //backwards compatibility
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 			this.ctx.fillStyle = 'black';
 			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 			this.ctx.fillStyle = 'white';
 			this.ctx.font = 'italic 30px Calibri';
-			this.ctx.fillText(this.canvas.text, 10, 60);
-			this.registers.forEach(function(item) {
-				item();
-			});
-		// }
-		this.texture.needsUpdate = true;
+			if(this.registers.length > 0) { //backwards compatibility
+				this.registers.forEach(function(item) {
+					item();
+				});
+			}else{
+				this.ctx.fillText(this.canvas.text, 10, 60);
+			}
+			this.texture.needsUpdate = true;
 	},
 
 	//not the most removable component out there, so will leave blank for now
