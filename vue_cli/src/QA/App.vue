@@ -34,18 +34,11 @@
           <a-animation attribute="position" begin="{{$index * 200}}" from="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}" to="{{15*Math.cos(Math.PI/4 * $index)}} 1.3 {{15*Math.sin(Math.PI/4 * $index)}}" dur="700" easing="linear" repeat="indefinite" direction="alternate"></a-animation>
         </a-entity>
           
-        
-      <!--   <a-image id="star" :height="star.height" :width="star.width" src="./src/images/star.png" position="0 6 -10" >
-        </a-image> -->
-
-        <!-- <a-entity  position="0 1 0" geometry="primitive: plane;" material="color:red"  ></a-entity> -->
+      
 
         <a-plane id="typing_text"  rotation="30 0 0" :draw="pure_typing" 
          :height="question.height" :width="question.width" position="0 7 -1"></a-plane>
 
-        <!-- <a-plane id="typing_text" textwrap="textAlign: center; x: 128; y: 128; text: Hello world!" height="3" width="6" position="0 3 -10" color="green"></a-plane> -->
-
-        <!-- <a-entity id="box" geometry="primitive: box" position="0 2 0" draw="background: #D7E8FF" textwrap="textAlign: center; x: 128; y: 128; text: Hello world!"></a-entity> -->
 
  
         <!-- <a-entity id="title" bmfont-text="text: |" material="color: white" position="-1.8 6 -5" >
@@ -61,6 +54,7 @@
         </a-entity> -->
 
         <a-entity
+            id="ans_yes"
             class="ans"
             @mouseenter="ansMouseEnter(0)"
             @mouseleave="targetMouseleave()"
@@ -71,6 +65,7 @@
         </a-entity>
 
         <a-entity
+            id="ans_no"
             class="ans"
             @mouseenter="ansMouseEnter(1)"
             @mouseleave="targetMouseleave()"
@@ -164,6 +159,8 @@ export default {
     ansMouseEnter(option){
       this.select_target = 'answer';
       this.now_ans_select = option;
+      var ansID = option ? 'ans_no' : 'ans_yes';
+      document.getElementById(ansID).emit('hover');
     },
     confirmClick (){
       switch(this.select_target){
@@ -198,7 +195,6 @@ export default {
         // .addScene(theater.replay)
     },
     playerMouseenter(index){
-      console.log(index);
       this.select_target = 'player';
       this.profile_index = index;
     },
