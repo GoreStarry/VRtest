@@ -26,12 +26,12 @@
           @mouseleave="targetMouseleave()"
           v-for="(index,player) in players" 
           track-by="$index"
-          look-at=".ans"
+          look-at="#camera"
           position="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}">
           <a-torus color="#5d472a" position="0 0 0" segments-radial="50" segments-tubular="200" radius="2"
             radius-tubular="0.1"></a-torus>
           <a-ring radius-inner="0.0001" radius-outer="2" :src="player.mugshot"></a-ring>
-          <a-animation attribute="position" begin="{{$index * 200}}" from="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}" to="{{15*Math.cos(Math.PI/4 * $index)}} 1.3 {{15*Math.sin(Math.PI/4 * $index)}}" dur="700" easing="linear" repeat="indefinite" direction="alternate"></a-animation>
+          <a-animation attribute="position" delay="{{$index * 200}}" from="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}" to="{{15*Math.cos(Math.PI/4 * $index)}} 1.3 {{15*Math.sin(Math.PI/4 * $index)}}" dur="700" easing="linear" repeat="indefinite" direction="alternate"></a-animation>
         </a-entity>
           
       
@@ -57,6 +57,36 @@
         </a-entity> -->
 
         <a-entity
+            id="ans_box"
+            position="0 3 0">
+       <!--      <a-animation attribute="position" begin="start_answer"
+            from="-1.8 6 -5"
+            to="-1.8 6 -15"
+            easing="ease-out"
+            dur="2000"
+            direction="alternate"
+            fill="forwards"
+            repeat="1"
+            ></a-animation>
+            <a-animation attribute="visible" begin="start_answer"
+            from="-1.8 6 -5"
+            to="-1.8 6 -15"
+            easing="ease-out"
+            dur="2000"
+            direction="alternate"
+            fill="forwards"
+            repeat="1"
+            ></a-animation> -->
+            <!-- <a-entity
+              v-for="(index,answer) in data_question['1'].answers"
+              track-by="$index"
+              :position="answersPosition($index,4,data_question['1'].answers.length)">
+              <a-ring radius-inner="0.0001" radius-outer="2" :src="answer.img_url"></a-ring>
+            </a-entity> -->
+            <a-animation mixin="ans_ani"></a-animation>
+        </a-entity>  
+
+        <!-- <a-entity
             id="ans_yes"
             class="ans"
             @mouseenter="ansMouseEnter(0)"
@@ -65,9 +95,9 @@
             <a-entity position="-0.7 0 0" text="text: YES!" material="color: green"></a-entity>
             <a-plane opacity="0" height="0.8" width="1.2"></a-plane>
             <a-animation mixin="ans_ani"></a-animation>
-        </a-entity>
+        </a-entity> -->
 
-        <a-entity
+        <!-- <a-entity
             id="ans_no"
             class="ans"
             @mouseenter="ansMouseEnter(1)"
@@ -77,8 +107,8 @@
             <a-entity position="-0.5 0 0" text="text: NO!" material="color: red"></a-entity>
             <a-animation mixin="ans_ani"></a-animation>
         </a-entity>
-
-        <a-entity id="plane" geometry="primitive: plane; width: 8; height: 5;" position="0 2 1" draw="background: black;  width: 800; height: 500;" textwrap="textAlign: left; x: 0; y: 0; width: 800; height: 500; text: Hello world!Hello world!Hello world!Hello world!Hello world!Hello world! 中文測試123，中文測試123中文測試123中文測試123中文測試123中文測試123。"></a-entity>
+ -->
+        <a-entity id="typing_text" geometry="primitive: plane; width: 8; height: 2;" position="0 7 -1" rotation="30 0 0" draw="width: 800;height: 200;" :textwrap="pure_typing"></a-entity>
 
         <!-- <a-plane id="typing_text_wrap" position="0 2 1" draw="background: black" textwrap="textAlign: left; x: 0; y: 0; text: Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!"
          height="4" width="10" ></a-plane> -->
@@ -93,19 +123,14 @@ import UserProfile from './component/user_profile.vue';
 require('gsap/src/minified/TweenMax.min.js');
 
 import {question} from './QA_data/best_part.js';
+import {q_animal} from './QA_data/qa_animal.js';
+
 import {players} from './QA_data/players.js';
 
 
 var theater = theaterJS({
-  "minSpeed": {
-    "erase": 80,
-    "type": 80,
-  },
-
-  "maxSpeed": {
-    "erase": 350,
-    "type": 350
-  }
+  "minSpeed": 80,
+  "maxSpeed": 250
 });
 
 export default {
@@ -115,13 +140,23 @@ export default {
   data () {
     return {
       players: players, 
+      profile_switch: false,
+      profile_index: 0,
+
+      /*profile animation*/
+      profile_aniBlock: false,
+      profile_tl: new TimelineLite(),
+      profile_tl_close: new TimelineMax({onComplete: ()=>{
+        this.profile_switch = false;
+      }}),
+
 
       typing_text: {
-        text: '1f4',
+        text: '',
       },
       
       /*QA data*/
-      data_question: question,
+      data_question: q_animal,
       now_ans_select: false,
       now_ques_step: 1,
 
@@ -138,16 +173,6 @@ export default {
        */
       select_target: false,
       
-      profile_switch: false,
-      profile_index: 0,
-
-      /*profile animation*/
-      profile_aniBlock: false,
-      profile_tl: new TimelineLite(),
-      profile_tl_close: new TimelineMax({onComplete: ()=>{
-        this.profile_switch = false;
-      }}),
-
     }
   },
   computed:{
@@ -159,12 +184,21 @@ export default {
     pure_typing: function(){
       return {
         text: this.typing_text.text,
-        width: 512,
-        height: 256,
+        textAlign: 'center',
+        lineHeight: 60,
+        x: 400,
+        y: 20,
+        width: 800,
+        height: 200, 
       }
     }
   },
   methods: {
+    answersPosition(index,width,length){
+      const x_start_at = -length * width /2 ;
+      const x = x_start_at + (index+0.5) * width;
+      return `${x} 0.5 -2`;
+    },
     ansMouseEnter(option){
       this.select_target = 'answer';
       this.now_ans_select = option;
@@ -198,7 +232,6 @@ export default {
       }
     },
     runTheater() {
-      console.log(this.data_question[this.now_ques_step].question);
       theater
         .addScene(`typing_text: ${this.data_question[this.now_ques_step].question}`, 200)
         // .addScene(theater.replay)

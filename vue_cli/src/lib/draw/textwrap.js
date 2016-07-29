@@ -109,6 +109,7 @@
 		 * Called once when component is attached. Generally for initial setup.
 		 */
 		init: function () {
+			console.log(this.el.components);
 			this.draw = this.el.components.draw;
 			this.draw.register(this.render.bind(this));
 		},
