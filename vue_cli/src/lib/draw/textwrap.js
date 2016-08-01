@@ -109,7 +109,6 @@
 		 * Called once when component is attached. Generally for initial setup.
 		 */
 		init: function () {
-			console.log(this.el.components);
 			this.draw = this.el.components.draw;
 			this.draw.register(this.render.bind(this));
 		},
@@ -138,18 +137,16 @@
 			}
 
 			// ctx.fillStyle = this.data.color;
-			ctx.fillStyle = 'white';
+			ctx.fillStyle = 'black';
 			// ctx.font = this.data.font;
 			ctx.textAlign = this.data.textAlign;
 			// ctx.textBaseline = this.data.textBaseline;
 			ctx.textBaseline = 'top';
 			ctx.direction = this.data.direction;
-			console.log(this.data.width);
 			wrapText(ctx, this.data.text, this.data.x, this.data.y, this.data.width, this.data.lineHeight);
 
 			//stolen from http://www.html5canvastutorials.com/tutorials/html5-canvas-wrap-text-tutorial/
 			function wrapText(context, text, x, y, maxWidth, lineHeight) {
-				console.log(maxWidth)
 				var words = text.split("");
 				var line = "";
 				for (var n = 0; n < words.length; n++) {

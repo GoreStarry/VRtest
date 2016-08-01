@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     proto: './src/main.js',
     DAT: './src/DAT.js', //day_after_tomorrow 
+    tired: './src/tired.js'
   },
   output: {
     path: path.resolve(__dirname, './dist'),
@@ -40,7 +41,7 @@ module.exports = {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'url',
         query: {
-          limit: 10000,
+          limit: 1000000000000000000,
           name: '[name].[ext]?[hash]'
         }
       }

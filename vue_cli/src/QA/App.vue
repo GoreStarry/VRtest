@@ -21,7 +21,7 @@
         </a-entity>
 
 
-        <a-entity class="players"
+<!--         <a-entity class="players"
           @mouseenter="playerMouseenter($index)"
           @mouseleave="targetMouseleave()"
           v-for="(index,player) in players" 
@@ -32,7 +32,7 @@
             radius-tubular="0.1"></a-torus>
           <a-ring radius-inner="0.0001" radius-outer="2" :src="player.mugshot"></a-ring>
           <a-animation attribute="position" delay="{{$index * 200}}" from="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}" to="{{15*Math.cos(Math.PI/4 * $index)}} 1.3 {{15*Math.sin(Math.PI/4 * $index)}}" dur="700" easing="linear" repeat="indefinite" direction="alternate"></a-animation>
-        </a-entity>
+        </a-entity> -->
           
       
 

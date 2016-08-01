@@ -20,9 +20,6 @@ module.exports.component = {
 	},
 
 	update: function (oldData) {
-		console.log(this.data);
-		console.log(this.data.width)
-		console.log(this.data.height)
 		this.createCanvas(this.data.width, this.data.height, this.data.text);
 	},
 
@@ -53,9 +50,9 @@ module.exports.component = {
 
 	render: function() {
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.ctx.fillStyle = 'black';
+			this.ctx.fillStyle = '#FDFAFA';
 			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-			this.ctx.fillStyle = 'white';
+			this.ctx.fillStyle = 'black';
 			this.ctx.font = 'italic 50px Calibri';
 			if(this.registers.length > 0) { //backwards compatibility
 				this.registers.forEach(function(item) {
