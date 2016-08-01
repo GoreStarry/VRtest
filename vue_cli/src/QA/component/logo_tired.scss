@@ -1,0 +1,109 @@
+body{
+    background-image: url(./images/logo/bg.png);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+#img_bg{
+    display: none;
+}
+
+#box__tired_logo{
+    opacity: 0;
+    position: relative;
+    @media screen and  (orientation: portrait) {
+        width: 90vw;
+        height: 90vw;
+    }
+
+    @media screen and  (orientation: landscape) {
+        width: 70vh;
+        height: 70vh;
+    }
+/*    background-color: rgba(255,255,255,0.8);*/
+}
+
+#box__tired_logo>img{
+    position: absolute;
+}
+
+#lihgt{
+    position: absolute;
+    top: 6%;
+    right: 27%;
+    width: 10%;
+    height: 30%;
+    background-image: linear-gradient(90deg,transparent 0%,rgba(247, 242, 234, 0) 30%,rgba(247, 242, 234, 0.7) 50%,rgba(247, 242, 234, 0) 70%,transparent 100%);
+    z-index: 1;
+}
+
+#img__r_b_hand{
+    width: 60%;
+    right: 12%;
+    bottom: 6%;
+}
+
+#img_l_b_medicine{
+    left: 14%;
+    bottom: 23%;
+    width: 40%;
+}
+
+#img_c_c_discription{
+    margin: auto;
+    top: 36.5%;
+    left: 0;
+    right: 0;
+    width: 45%;
+}
+
+#img_r_t_text1{
+    left: 32%;;
+    width: 14%;
+    top: 13%;
+        z-index: 2;
+
+}
+
+#img_c_t_text2{
+    left: 47.5%;
+    top: 25%;
+    opacity: 0;
+    width: 7%;
+        z-index: 2;
+
+}
+
+#img_r_c_text3{
+    left: 56.5%;
+    top: 20%;
+    width: 12%;
+        z-index: 2;
+
+}
+
+#img_c_t_logo{
+    opacity: 0;
+    width: 20%;
+    top: 7%;
+    left: 46%;
+}
+
+#img_l_t_leaf1{
+    width: 20%;
+    top: 14%;
+    left: 1%;
+}
+
+#img_r_t_leaf2{
+    width: 8%;
+    top: 18%;
+    right: 6%;
+}
+
+#img_r_c_leaf3{
+    top: 38%;
+    right: 10%;
+}

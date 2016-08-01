@@ -1,0 +1,35 @@
+body {
+    font-family: Helvetica, sans-serif;
+}
+
+.btn__confirm {
+    z-index: 10;
+    position: fixed;
+    bottom: 1rem;
+    margin: auto;
+    left: 0;
+    right: 0;
+    cursor: pointer;
+    width: 30vw;
+    height: 30vw;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30vw;
+    background-color: gray;
+    opacity: 0.5;
+    transition: background-color 0.5s ease-out;
+}
+
+.btn__confirm--act{
+    background-color: aquamarine;
+}
+
+
+@keyframes confirm_act{
+    from{
+        
+    }
+    to{
+        
+    }
+}

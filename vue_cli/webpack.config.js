@@ -2,11 +2,15 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/main.js',
+  entry: {
+    proto: './src/main.js',
+    DAT: './src/DAT.js', //day_after_tomorrow 
+    tired: './src/tired.js'
+  },
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: 'build.js'
+    filename: "[name].js",
   },
   resolveLoader: {
     root: path.join(__dirname, 'node_modules'),
@@ -30,11 +34,14 @@ module.exports = {
         test: /\.html$/,
         loader: 'vue-html'
       },
+      { test: /\.css$/,
+        loader: "style!css"
+      },
       {
         test: /\.(png|jpg|gif|svg)$/,
         loader: 'url',
         query: {
-          limit: 10000,
+          limit: 1000000000000000000,
           name: '[name].[ext]?[hash]'
         }
       }

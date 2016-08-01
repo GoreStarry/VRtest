@@ -1,10 +1,10 @@
 module.exports.component = {
 	schema: {
 		width: {
-			default: 150
+			default: 800
 		},
 		height: {
-			default: 100
+			default: 200
 		},
 		background: {
 			default: "green"
@@ -29,7 +29,7 @@ module.exports.component = {
 		canvas.width = w;
 		canvas.height = h;
 		canvas.text = text;
-		canvas.style = "display: none";
+		// canvas.style = "display: none"; //make safari err for ?
 		_.canvas = canvas;
 		_.ctx = canvas.getContext("2d");
 
@@ -49,18 +49,19 @@ module.exports.component = {
 	},
 
 	render: function() {
-		// if(this.registers.length > 0) { //backwards compatibility
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.ctx.fillStyle = 'black';
+			this.ctx.fillStyle = '#FDFAFA';
 			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-			this.ctx.fillStyle = 'white';
-			this.ctx.font = 'italic 30px Calibri';
-			this.ctx.fillText(this.canvas.text, 0, 80);
-			this.registers.forEach(function(item) {
-				item();
-			});
-		// }
-		this.texture.needsUpdate = true;
+			this.ctx.fillStyle = 'black';
+			this.ctx.font = 'italic 50px Calibri';
+			if(this.registers.length > 0) { //backwards compatibility
+				this.registers.forEach(function(item) {
+					item();
+				});
+			}else{
+				this.ctx.fillText(this.canvas.text, 10, 60);
+			}
+			this.texture.needsUpdate = true;
 	},
 
 	//not the most removable component out there, so will leave blank for now
