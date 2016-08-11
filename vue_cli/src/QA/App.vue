@@ -1,6 +1,6 @@
 <template>
   
-  <div :class="['btn__confirm',{'btn__confirm--act': select_target}]" @click="confirmClick">Confirm</div>
+  <!-- <div :class="['btn__confirm',{'btn__confirm--act': select_target}]" @click="confirmClick">Confirm</div> -->
 
   <user-profile 
     :players-data="players"
@@ -8,58 +8,50 @@
     :profile-close="profileClose" 
     :profile-switch="profile_switch"></user-profile>
     
-  <a-scene>  
+  <a-scene id="abody" @click.stop.prevent="bodyClick">  
         <a-assets>
             <a-mixin id="ans_ani" attribute="rotation" from="0 0 0"
             begin="hover" to="0 360 0" dur="2500" fill="forwards" direction="alternate" repeat="1">
             </a-mixin>
         </a-assets>
 
-        <a-entity id="camera" camera look-controls wasd-controls position="0 2 8">
+        <a-entity id="camera" camera universal-controls="movementEnabled: true;"
+           position="0 2 8">
             <a-entity position="0 0 -5" geometry="primitive: ring; radiusOuter: 0.06;
                               radiusInner: 0.05;" material="color: red; shader: flat" cursor="maxDistance: 100"></a-entity>
         </a-entity>
 
-
-<!--         <a-entity class="players"
-          @mouseenter="playerMouseenter($index)"
-          @mouseleave="targetMouseleave()"
-          v-for="(index,player) in players" 
-          track-by="$index"
-          look-at="#camera"
-          position="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}">
-          <a-torus color="#5d472a" position="0 0 0" segments-radial="50" segments-tubular="200" radius="2"
-            radius-tubular="0.1"></a-torus>
-          <a-ring radius-inner="0.0001" radius-outer="2" :src="player.mugshot"></a-ring>
-          <a-animation attribute="position" delay="{{$index * 200}}" from="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}" to="{{15*Math.cos(Math.PI/4 * $index)}} 1.3 {{15*Math.sin(Math.PI/4 * $index)}}" dur="700" easing="linear" repeat="indefinite" direction="alternate"></a-animation>
-        </a-entity> -->
+        <a-entity rotation="0 45 0">
+          <a-entity class="players"
+            @click.stop="confirmClick"
+            @mouseenter="playerMouseenter($index)"
+            @mouseleave="targetMouseleave()"
+            
+            v-for="(index,player) in players" 
+            track-by="$index"
+            look-at="#player_watch"
+            position="{{15*Math.cos(Math.PI/4 * index)}} 1 {{15*Math.sin(Math.PI/4 * index)}}">
+            <a-torus id="player_{{$index}}" color="#5d472a" position="0 0 0" segments-radial="50" segments-tubular="200" radius="2"
+              radius-tubular="0.1">
+              <a-animation
+                attribute="rotation" 
+                begin="hover_player"
+                easing="ease-out"
+                from="0 0 0"
+                to="0 360 0"
+                dur="1000"
+              ></a-animation>
+            </a-torus>
+            <a-ring radius-inner="0.0001" radius-outer="1.8" :src="player.mugshot"></a-ring>
+            <a-animation attribute="position" delay="{{$index * 200}}" from="{{15*Math.cos(Math.PI/4 * $index)}} 1 {{15*Math.sin(Math.PI/4 * $index)}}" to="{{15*Math.cos(Math.PI/4 * $index)}} 1.3 {{15*Math.sin(Math.PI/4 * $index)}}" dur="700" easing="linear" repeat="indefinite" direction="alternate"></a-animation>
+           </a-entity>
+        </a-entity>
           
-      
-
-        <!-- <a-plane id="typing_text"  rotation="30 0 0" :draw="pure_typing" 
-         :height="question.height" :width="question.width" position="0 7 -1"></a-plane> -->
-
-        <!-- <a-plane id="typing_text"  rotation="30 0 0" :draw="pure_typing" 
-         height="4" width="10" position="0 7 -1"></a-plane> -->
-
-
- 
-        <!-- <a-entity id="title" bmfont-text="text: |" material="color: white" position="-1.8 6 -5" >
-            <a-animation attribute="position" begin="fly"
-            from="-1.8 6 -5"
-            to="-1.8 6 -15"
-            easing="ease-out"
-            dur="2000"
-            direction="alternate"
-            fill="forwards"
-            repeat="1"
-            ></a-animation>
-        </a-entity> -->
-
-        <a-entity
+    
+       <!--  <a-entity
             id="ans_box"
             position="0 3 0">
-       <!--      <a-animation attribute="position" begin="start_answer"
+            <a-animation attribute="position" begin="start_answer"
             from="-1.8 6 -5"
             to="-1.8 6 -15"
             easing="ease-out"
@@ -76,42 +68,82 @@
             direction="alternate"
             fill="forwards"
             repeat="1"
-            ></a-animation> -->
-            <!-- <a-entity
+            ></a-animation>
+            <a-entity
               v-for="(index,answer) in data_question['1'].answers"
               track-by="$index"
               :position="answersPosition($index,4,data_question['1'].answers.length)">
               <a-ring radius-inner="0.0001" radius-outer="2" :src="answer.img_url"></a-ring>
-            </a-entity> -->
+            </a-entity>
             <a-animation mixin="ans_ani"></a-animation>
+        </a-entity>   -->
+        <a-entity id="player_watch" position="-1.8 2 -5"></a-entity>
+
+        <a-entity
+            id="ans_box"
+            position="0 20 -5"
+            rotation="180 0 0"
+            visible="false"
+            >
+
+            <a-animation attribute="rotation" begin="start_answer"
+              from="180 0 0"
+              to="0 0 0"
+              easing="ease-out"
+              dur="2000"
+              fill="forwards"
+            ></a-animation>
+
+            <a-animation attribute="visible" begin="start_answer"
+              to="true"
+              dur="1000"
+            ></a-animation>
+
+            <a-animation attribute="rotation" begin="out_answer"
+              from="0 0 0"
+              to="180 0 0"
+              easing="ease-in"
+              dur="2000"
+              fill="forwards"
+            ></a-animation>
+
+            <a-animation attribute="visible" begin="out_answer"
+              delay="2000"
+              to="false"
+              dur="1000"
+            ></a-animation>
+
+
+            <a-entity
+              v-for="(index,answer) in data_question[now_ques_step].answers"
+              track-by="id"
+              @click="confirmClick"
+              @mouseenter="ansMouseEnter(index)"
+              @mouseleave="ansMouseLeave(index)"
+              :position="answersPosition($index,answer.width,answer.height)">
+              <a-image id="answer_{{now_ques_step}}_{{index}}" :src="answer.img_url"
+                :height="answer.height" :width="answer.width">
+                <a-animation attribute="position" begin="hover_ans_option"
+                  from="0 0 0"
+                  to="0 0 4"
+                  easing="ease-out"
+                  dur="1000"
+                  fill="forwards"
+                ></a-animation>
+                <a-animation attribute="position" begin="leave_ans_option"
+                  from="0 0 4"
+                  to="0 0 0"
+                  easing="ease-out"
+                  dur="1000"
+                  fill="forwards"
+                ></a-animation>
+              </a-image>
+          
+            </a-entity>
+
         </a-entity>  
 
-        <!-- <a-entity
-            id="ans_yes"
-            class="ans"
-            @mouseenter="ansMouseEnter(0)"
-            @mouseleave="targetMouseleave()"
-            position="-2 3 0">
-            <a-entity position="-0.7 0 0" text="text: YES!" material="color: green"></a-entity>
-            <a-plane opacity="0" height="0.8" width="1.2"></a-plane>
-            <a-animation mixin="ans_ani"></a-animation>
-        </a-entity> -->
-
-        <!-- <a-entity
-            id="ans_no"
-            class="ans"
-            @mouseenter="ansMouseEnter(1)"
-            @mouseleave="targetMouseleave()"
-            position="2 3 0" >
-            <a-plane opacity="0" height="0.8" width="1.2"></a-plane>
-            <a-entity position="-0.5 0 0" text="text: NO!" material="color: red"></a-entity>
-            <a-animation mixin="ans_ani"></a-animation>
-        </a-entity>
- -->
-        <a-entity id="typing_text" geometry="primitive: plane; width: 8; height: 2;" position="0 7 -1" rotation="30 0 0" draw="width: 800;height: 200;" :textwrap="pure_typing"></a-entity>
-
-        <!-- <a-plane id="typing_text_wrap" position="0 2 1" draw="background: black" textwrap="textAlign: left; x: 0; y: 0; text: Hello world!Hello world!Hello world!Hello world!Hello world!Hello world!"
-         height="4" width="10" ></a-plane> -->
+        <a-entity id="typing_text" geometry="primitive: plane; width: 10; height: 3;" position="0 7 -1" rotation="30 0 0" draw="width: 1000;height: 300;" :textwrap="pure_typing"></a-entity>
 
 
         <a-sky src="./src/images/louvreA.jpg" rotation="0 -99.5 0"></a-sky>
@@ -122,15 +154,14 @@
 import UserProfile from './component/user_profile.vue';
 require('gsap/src/minified/TweenMax.min.js');
 
-import {question} from './QA_data/best_part.js';
-import {q_animal} from './QA_data/qa_animal.js';
+import {qa_demo} from './QA_data/qa_demo.js';
 
 import {players} from './QA_data/players.js';
 
 
 var theater = theaterJS({
-  "minSpeed": 80,
-  "maxSpeed": 250
+  "minSpeed": 30,
+  "maxSpeed": 60
 });
 
 export default {
@@ -142,6 +173,7 @@ export default {
       players: players, 
       profile_switch: false,
       profile_index: 0,
+      modal_on: false,
 
       /*profile animation*/
       profile_aniBlock: false,
@@ -156,7 +188,7 @@ export default {
       },
       
       /*QA data*/
-      data_question: q_animal,
+      data_question: qa_demo,
       now_ans_select: false,
       now_ques_step: 1,
 
@@ -164,6 +196,9 @@ export default {
         width: 0,
         height: 0,
       },
+
+      answer_width: 8,
+      answer_height: 2,
 
       select_active: false,
       
@@ -188,44 +223,76 @@ export default {
         lineHeight: 60,
         x: 400,
         y: 20,
-        width: 800,
-        height: 200, 
+        width: 1000,
+        height: 300, 
       }
     }
   },
   methods: {
-    answersPosition(index,width,length){
-      const x_start_at = -length * width /2 ;
-      const x = x_start_at + (index+0.5) * width;
-      return `${x} 0.5 -2`;
+    bodyClick(){
+      if(this.modal_on){
+        // this.profile_switch = false;
+        // this.modal_on = false;
+        this.profileClose();
+      }
     },
-    ansMouseEnter(option){
+    answersPosition(index,width,height){
+      const left_right = index % 2 == 0 ? -1 : 1;
+      const x = left_right * (index % 2 * width + 0.2) - width / 2 ;
+      const y = Math.floor(index/2) * ( -height - 1) - 16;
+      return `${x} ${y} -2`;
+    },
+    ansMouseEnter(index){
       this.select_target = 'answer';
-      this.now_ans_select = option;
-      var ansID = option ? 'ans_no' : 'ans_yes';
-      document.getElementById(ansID).emit('hover');
+      this.now_ans_select = index;
+      document.getElementById(`answer_${this.now_ques_step}_${index}`).emit('hover_ans_option');
+    },
+    ansMouseLeave(index){
+      this.select_target = false;
+      document.getElementById(`answer_${this.now_ques_step}_${index}`).emit('leave_ans_option');
     },
     confirmClick (){
+      if(this.profile_switch){
+        this.profileClose();
+        this.profile_switch = false;
+        return false;
+      }
       switch(this.select_target){
-
         case 'player':
           if(!this.profile_switch){
             this.profile_switch = true;
-            
-            this.profile_tl.staggerTo(this.profile_aniBlock, 0.3,{
-              // cycle:{
-              //   x: ['0%','0%']
-              // },
+            setTimeout(()=>{
+              this.modal_on = true;
+            },500)
+            this.profile_tl.staggerTo(this.profile_aniBlock, 0.5,{
+              cycle:{
+                x: ['0%','0%']
+              },
               autoAlpha: 1,
               ease: Power1.easeOut
-            },0.1);
+            },0.3);
           }else{
             this.profile_switch = true;
           }
+          break;
         case 'answer': 
-          // get next question number
-          this.now_ques_step = Object.keys(this.data_question[this.now_ques_step].answers[this.now_ans_select])[0];
-          this.runTheater();
+          // get next question number   
+          // const ans_target = Object.keys(this.data_question[this.now_ques_step].answers[this.now_ans_select])[0];
+          // console.log(ans_target);
+          // if(ans_target.length<2){
+            document.getElementById('ans_box').emit('out_answer');
+            setTimeout(()=>{
+              document.getElementById(`answer_${this.now_ques_step}_${this.now_ans_select}`).emit('leave_ans_option');
+            },1000)
+            setTimeout(()=>{
+              this.now_ques_step = this.now_ques_step + 1;
+              this.runTheater();
+            },1500)
+          // }else{//get result
+            
+          // }
+          break;
+          
 
         default:
           return false;
@@ -234,27 +301,34 @@ export default {
     runTheater() {
       theater
         .addScene(`typing_text: ${this.data_question[this.now_ques_step].question}`, 200)
-        // .addScene(theater.replay)
+        setTimeout(()=>{
+          document.getElementById('ans_box').emit('start_answer');
+        },2000)
     },
     playerMouseenter(index){
       this.select_target = 'player';
       this.profile_index = index;
+      document.getElementById(`player_${index}`).emit('hover_player');
     },
     targetMouseleave(){
       this.select_target = false;
     },
     profileClose(){
-      
       this.profile_tl_close.staggerTo(this.profile_aniBlock, 0.3,{
-        // cycle:{
-        //   x: ['-100%','100%']
-        // },
+        cycle:{
+          x: ['-100%','100%']
+        },
         autoAlpha: 0,
-        ease: Power1.easeOut
+        ease: Power1.easeOut,
+        onComplete: ()=>{
+          this.profile_switch = false;
+          this.modal_on = false;
+        },
       },0.1);
     },
   },
   ready () {
+    document.getElementById('typing_text').emit('init_question');
     this.profile_aniBlock = document.querySelectorAll('.box__info_block');
 
     /* Question Animation */

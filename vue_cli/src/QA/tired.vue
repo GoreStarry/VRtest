@@ -10,9 +10,6 @@
     
   <a-scene v-show="logo_done">  
         <a-assets>
-            <a-mixin id="ans_ani" attribute="rotation" from="0 0 0"
-            begin="hover" to="0 360 0" dur="2500" fill="forwards" direction="alternate" repeat="1">
-            </a-mixin>
             <img id="adv1" src="./images/ad/ad1.jpg">
             <img id="adv2" src="./images/ad/ad2.jpg">
             <img id="ans_never" src="./images/qa_weis/never.png">
@@ -59,14 +56,6 @@
             visible="false"
             >
 
-           <!--  <a-animation attribute="position" begin="start_answer"
-              from="-1.8 9 -15"
-              to="-1.8 3 -5"
-              easing="ease-out"
-              dur="2000"
-              fill="forwards"
-            ></a-animation>
- -->
             <a-animation attribute="rotation" begin="start_answer"
               from="180 0 0"
               to="0 0 0"
@@ -94,13 +83,6 @@
               dur="1000"
             ></a-animation>
 
-            <!-- <a-animation attribute="position" begin="out_answer"
-              from="-1.8 3 -15"
-              to="-1.8 3 -5"
-              easing="ease-out"
-              dur="2000"
-              fill="forwards"
-            ></a-animation> -->
 
             <a-entity
               v-for="(index,answer) in data_question[now_ques_step].answers"
@@ -125,25 +107,9 @@
                   fill="forwards"
                 ></a-animation>
               </a-image>
-              <!-- <a-box id="answer_{{now_ques_step}}_{{index}}" color="tomato" depth="0.1" :height="answer_height" :width="answer_width">
-                <a-animation attribute="position" begin="hover_ans_option"
-                  from="0 0 0"
-                  to="0 0 4"
-                  easing="ease-out"
-                  dur="1000"
-                  fill="forwards"
-                ></a-animation>
-                <a-animation attribute="position" begin="leave_ans_option"
-                  from="0 0 4"
-                  to="0 0 0"
-                  easing="ease-out"
-                  dur="1000"
-                  fill="forwards"
-                ></a-animation>
-              </a-box> -->
+          
             </a-entity>
 
-            <a-animation mixin="ans_ani"></a-animation>
         </a-entity>  
 
         <a-entity id="typing_text" geometry="primitive: plane; width: 8; height: 2;" position="0.1 6 -1" rotation="20 0 0" draw="width: 800;height: 200;" :textwrap="pure_typing">
@@ -287,6 +253,7 @@ export default {
         case 'answer': 
           // get next question number   
           const ans_target = Object.keys(this.data_question[this.now_ques_step].answers[this.now_ans_select])[0];
+          
           if(ans_target.length<2){
             document.getElementById('ans_box').emit('out_answer');
             setTimeout(()=>{

@@ -1,10 +1,10 @@
 module.exports.component = {
 	schema: {
 		width: {
-			default: 800
+			default: 1000
 		},
 		height: {
-			default: 200
+			default: 300
 		},
 		background: {
 			default: "green"
@@ -50,9 +50,9 @@ module.exports.component = {
 
 	render: function() {
 			this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-			this.ctx.fillStyle = '#FDFAFA';
-			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 			this.ctx.fillStyle = 'black';
+			this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+			this.ctx.fillStyle = 'white';
 			this.ctx.font = 'italic 50px Calibri';
 			if(this.registers.length > 0) { //backwards compatibility
 				this.registers.forEach(function(item) {

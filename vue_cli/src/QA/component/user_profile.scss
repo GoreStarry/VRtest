@@ -7,9 +7,14 @@
     z-index: 10;
     width: 100vw;
     height: 100vh;
-    padding: 0 0 30vw 0;
+    // padding: 0 0 30vw 0;
 //    pointer-events: none;
-
+    .box__mugshot{
+        width: 40vw;
+        height: 100%;
+        text-align: center;
+        display: inline-block;
+    }
     .img__mugshot {
         height: 100%;
         border-radius: 20px;
@@ -28,12 +33,25 @@
         span {
             width: 12vw;
         }
+        font-style: italic;
+        span.box__name{
+            font-size: 6vh;
+            font-weight: bold;
+            width: auto;
+        }
+        span.box__age{
+            width:auto;
+            font-size: 3vh;
+            font-weight: bold;
+        }
     }
     .location__info_block {
         margin-top: 2vh;
         width: 60vw;
         span {
             width: 20vw;
+            font-size: 2vh;
+            font-weight: bold;
         }
     }
     .intro__info_block{
@@ -41,9 +59,13 @@
         width: 70vw;
         span {
             text-align: left;
-            width: 40vw;
+            width: 30vw;
+            // font-weight: bold;
+            // text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            padding-left: 10vw;
         }
     }
+
 }
 
 .btn__say_hi{
@@ -76,7 +98,7 @@
     opacity: 0;
     position: relative;
     display: inline-block;
-    background-color: rgba(255, 255, 255, 0.5);
+    // background-color: rgba(255, 255, 255, 0.5);
     //    box-sizing: border-box;
     span {
         display: inline-block;
@@ -92,15 +114,20 @@
         filter: blur(70px);
     }
     &.left {
-//        transform: translateX(-100%);
+       transform: translateX(-100%);
         text-align: right;
         padding: 1rem 5rem 1rem 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.5) 0%,rgba(255, 255, 255, 0.5) 69%,rgba(255,255,255,0) 100%);
+
 //        animation: left_open 1s ease-out forwards;
     }
     &.right {
-//        transform: translateX(100%);
+        transform: translateX(100%);
         align-self: flex-end;
-//        padding: 1rem 0 1rem 5rem;animation: right_open 1s ease-out forwards;
+        padding: 1rem 0 1rem 5rem;
+    background: linear-gradient(to left, rgba(255, 255, 255, 0.5) 0%,rgba(255, 255, 255, 0.5) 69%,rgba(255,255,255,0) 100%);
+
+       // animation: right_open 1s ease-out forwards;
     }
    
 }

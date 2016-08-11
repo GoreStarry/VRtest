@@ -77,7 +77,7 @@
 				default: "Sample Text"
 			},
 			x: {
-				default: 5
+				default: 30
 			},
 			y: {
 				default: 20
@@ -137,7 +137,7 @@
 			}
 
 			// ctx.fillStyle = this.data.color;
-			ctx.fillStyle = 'black';
+			ctx.fillStyle = 'white';
 			// ctx.font = this.data.font;
 			ctx.textAlign = this.data.textAlign;
 			// ctx.textBaseline = this.data.textBaseline;
@@ -153,8 +153,8 @@
 					var testLine = line + words[n] + " ";
 					var metrics = context.measureText(testLine);
 					var testWidth = metrics.width;
-					if (testWidth > maxWidth && n > 0) {
-						context.fillText(line, x, y);
+					if (testWidth > maxWidth - 100 && n > 0) {
+						context.fillText(line, x + 100, y);
 						line = words[n] + " ";
 						y += (lineHeight);
 					} else {
@@ -162,7 +162,7 @@
 					}
 				}
 	
-				context.fillText(line,x, y);
+				context.fillText(line,x + 100, y);
 			}
 		},
 
